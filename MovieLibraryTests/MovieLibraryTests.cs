@@ -74,5 +74,56 @@ namespace MovieLibraryTests
 
             Assert.AreEqual(expected, actual);
         }
+        
+        [TestMethod]
+        public void TestDetailedMovieConversion() 
+        {
+            var movies = new[] {
+                new Movie { id = "1", title = "a", rated = "5,0"},
+                new Movie { id = "2", title = "b", rated = "6,0"}
+            };
+            
+            var detailedMovies = new[] {
+                new DetailedMovie { id = "3", title = "c", imdbRating = 7.0 },
+                new DetailedMovie { id = "4", title = "d", imdbRating = 8.0 }
+            };
+
+            var simpleMovieRepository = new MockedSimpleMovieRepository(movies);
+            var detailedMovieRepository = new MockedDetailedMovieRepository(detailedMovies);
+            var combinedMovieRepository = new MovieRepository(simpleMovieRepository, detailedMovieRepository);
+
+            var expected = new Movie { id = "3", title = "c", rated = "7,0" };
+            var actual = combinedMovieRepository.SimplifyDetailedMovie(detailedMovies.First());
+
+            Assert.AreEqual(expected.title, actual.title);
+            Assert.AreEqual(expected.rated, actual.rated);
+        }
+        
+        [TestMethod]
+        public void TestMovieRepositoryCombined() 
+        {
+            var movies = new[] {
+                new Movie { id = "1", title = "a", rated = "5,0"},
+                new Movie { id = "2", title = "b", rated = "6,0"}
+            };
+            
+            var detailedMovies = new[] {
+                new DetailedMovie { id = "1", title = "a", imdbRating = 7.0 },
+                new DetailedMovie { id = "4", title = "d", imdbRating = 8.0 }
+            };
+
+            var simpleMovieRepository = new MockedSimpleMovieRepository(movies);
+            var detailedMovieRepository = new MockedDetailedMovieRepository(detailedMovies);
+            var combinedMovieRepository = new MovieRepository(simpleMovieRepository, detailedMovieRepository);
+
+            var expected = 3;
+            var actual = combinedMovieRepository.GetMovies().Count();
+            foreach(var m in combinedMovieRepository.GetMovies()) {
+                System.Console.WriteLine(m.id);
+                System.Console.WriteLine(m.title);
+            }
+            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(expected, actual);
+        }
     }
 }

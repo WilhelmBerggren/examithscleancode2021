@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using MovieLibrary.Models;
@@ -13,11 +14,11 @@ namespace MovieLibrary.Services
             _simpleMovieRepository = simpleMovieRepository;
             _detailedMovieRepository = detailedMovieRepository;
         }
-        private Movie SimplifyDetailedMovie(DetailedMovie detailedMovie) 
+        public Movie SimplifyDetailedMovie(DetailedMovie detailedMovie) 
         {
             return new Movie {
                 id = detailedMovie.id,
-                rated = detailedMovie.imdbRating.ToString(),
+                rated = detailedMovie.imdbRating.ToString("0.0"),
                 title = detailedMovie.title
             };
         }
@@ -29,7 +30,12 @@ namespace MovieLibrary.Services
             
             var simpleMovies = _simpleMovieRepository.GetMovies();
 
-            return simpleMovies.Union(simplifiedMovies);
+            var combinedMovies = simpleMovies
+                .Union(simplifiedMovies)
+                .GroupBy(movie => movie.title)
+                .Select(movies => movies.First());
+            
+            return combinedMovies;
         }
     }
 }
