@@ -1,23 +1,35 @@
 using System.Collections.Generic;
-using System.IO;
-using System.Net.Http;
-using System.Text.Json;
+using System.Linq;
 using MovieLibrary.Models;
 
 namespace MovieLibrary.Services
 {
     public class MovieRepository : IMovieRepository
     {
-        static HttpClient client = new HttpClient();
-        List<Movie> Movies { get; set; }
-        public MovieRepository()
+        ISimpleMovieRepository _simpleMovieRepository { get; set; }
+        IDetailedMovieRepository _detailedMovieRepository { get; set; }
+        public MovieRepository(ISimpleMovieRepository simpleMovieRepository, IDetailedMovieRepository detailedMovieRepository)
         {
-            var jsonResult = client.GetAsync("https://ithstenta2020.s3.eu-north-1.amazonaws.com/topp100.json").Result;
-            Movies = JsonSerializer.Deserialize<List<Movie>>(new StreamReader(jsonResult.Content.ReadAsStream()).ReadToEnd());
+            _simpleMovieRepository = simpleMovieRepository;
+            _detailedMovieRepository = detailedMovieRepository;
+        }
+        private Movie SimplifyDetailedMovie(DetailedMovie detailedMovie) 
+        {
+            return new Movie {
+                id = detailedMovie.id,
+                rated = detailedMovie.imdbRating.ToString(),
+                title = detailedMovie.title
+            };
         }
         public IEnumerable<Movie> GetMovies()
         {
-            return Movies;
+            var simplifiedMovies = _detailedMovieRepository
+                .GetDetailedMovies()
+                .Select(movie => SimplifyDetailedMovie(movie));
+            
+            var simpleMovies = _simpleMovieRepository.GetMovies();
+
+            return simpleMovies.Union(simplifiedMovies);
         }
     }
 }
