@@ -8,16 +8,13 @@ namespace MovieLibrary.Services
 {
     public class SimpleMovieRepository : ISimpleMovieRepository
     {
+        const string dataUrl = "https://ithstenta2020.s3.eu-north-1.amazonaws.com/topp100.json";
         static HttpClient client = new HttpClient();
-        List<Movie> Movies { get; set; }
-        public SimpleMovieRepository()
-        {
-            var jsonResult = client.GetAsync("https://ithstenta2020.s3.eu-north-1.amazonaws.com/topp100.json").Result;
-            Movies = JsonSerializer.Deserialize<List<Movie>>(new StreamReader(jsonResult.Content.ReadAsStream()).ReadToEnd());
-        }
         public IEnumerable<Movie> GetMovies()
         {
-            return Movies;
+            var httpResult = client.GetAsync(dataUrl).Result;
+            var jsonResult = new StreamReader(httpResult.Content.ReadAsStream()).ReadToEnd();
+            return JsonSerializer.Deserialize<List<Movie>>(jsonResult);
         }
     }
 }

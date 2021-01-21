@@ -7,18 +7,16 @@ using MovieLibrary.Models;
 
 namespace MovieLibrary.Services
 {
-  public class DetailedMovieRepository : IDetailedMovieRepository
-  {
-    static HttpClient client = new HttpClient();
-    List<DetailedMovie> DetailedMovies { get; set; }
-    public DetailedMovieRepository()
+    public class DetailedMovieRepository : IDetailedMovieRepository
     {
-        var jsonResult = client.GetAsync("https://ithstenta2020.s3.eu-north-1.amazonaws.com/detailedMovies.json").Result;
-        DetailedMovies = JsonSerializer.Deserialize<List<DetailedMovie>>(new StreamReader(jsonResult.Content.ReadAsStream()).ReadToEnd());
+        const string dataUrl = "https://ithstenta2020.s3.eu-north-1.amazonaws.com/detailedMovies.json";
+        static HttpClient client = new HttpClient();
+        List<DetailedMovie> DetailedMovies { get; set; }
+        public IEnumerable<DetailedMovie> GetDetailedMovies()
+        {
+            var httpResult = client.GetAsync(dataUrl).Result;
+            var jsonResult = new StreamReader(httpResult.Content.ReadAsStream()).ReadToEnd();
+            return JsonSerializer.Deserialize<List<DetailedMovie>>(jsonResult);
+        }
     }
-    public IEnumerable<DetailedMovie> GetDetailedMovies()
-    {
-        return DetailedMovies;
-    }
-  }
 }
