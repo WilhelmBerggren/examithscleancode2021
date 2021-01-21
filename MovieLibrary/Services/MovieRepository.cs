@@ -1,12 +1,23 @@
 using System.Collections.Generic;
-using MovieLibrary.Controllers;
+using System.IO;
+using System.Net.Http;
+using System.Text.Json;
 using MovieLibrary.Models;
 
-namespace MovieLibrary.Services {
-  public class MovieRepository: IMovieRepository {
-    public IEnumerable<Movie> GetMovies()
+namespace MovieLibrary.Services
+{
+    public class MovieRepository : IMovieRepository
     {
-      throw new System.NotImplementedException();
+        static HttpClient client = new HttpClient();
+        List<Movie> Movies { get; set; }
+        public MovieRepository()
+        {
+            var jsonResult = client.GetAsync("https://ithstenta2020.s3.eu-north-1.amazonaws.com/topp100.json").Result;
+            Movies = JsonSerializer.Deserialize<List<Movie>>(new StreamReader(jsonResult.Content.ReadAsStream()).ReadToEnd());
+        }
+        public IEnumerable<Movie> GetMovies()
+        {
+            return Movies;
+        }
     }
-  }
 }

@@ -5,9 +5,14 @@ using System.Collections.Generic;
 namespace MovieLibraryTests.Mocks 
 {
     public class MockedMovieRepository: IMovieRepository {
+        private IEnumerable<Movie> _movies { get; set; }
+        public MockedMovieRepository(IEnumerable<Movie> movies)
+        {
+            _movies = movies;
+        }
         public IEnumerable<Movie> GetMovies()
         {
-            throw new System.NotImplementedException();
+            return _movies;
         }
     }
 }

@@ -27,8 +27,7 @@ namespace MovieLibrary.Controllers
         public IEnumerable<string> Toplist(bool asc = true)
         {
             List<string> res = new List<string>();
-            var r = client.GetAsync("https://ithstenta2020.s3.eu-north-1.amazonaws.com/topp100.json").Result;
-            var ml = JsonSerializer.Deserialize<List<Movie>>(new StreamReader(r.Content.ReadAsStream()).ReadToEnd());
+            var ml = _movieRepository.GetMovies();
             //Sort ml
             if (asc)
             {
@@ -48,8 +47,7 @@ namespace MovieLibrary.Controllers
         [HttpGet]
         [Route("/movie")]
         public Movie GetMovieById(string id) {
-            var r = client.GetAsync("https://ithstenta2020.s3.eu-north-1.amazonaws.com/topp100.json").Result;
-            var ml = JsonSerializer.Deserialize<List<Movie>>(new StreamReader(r.Content.ReadAsStream()).ReadToEnd());
+            var ml = _movieRepository.GetMovies();
             foreach (var m in ml) {
                 if (m.id.Equals((id)))
                 {
