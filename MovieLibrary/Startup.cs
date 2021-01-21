@@ -28,6 +28,7 @@ namespace MovieLibrary
         {
             services.AddControllers();
             services.AddScoped<IMovieRepository, MovieRepository>();
+            services.AddScoped<IDetailedMovieRepository, DetailedMovieRepository>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "MovieLibrary", Version = "v1"});
