@@ -11,7 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-
+using MovieLibrary.Services;
 namespace MovieLibrary
 {
     public class Startup
@@ -27,6 +27,7 @@ namespace MovieLibrary
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddScoped<IMovieRepository, MovieRepository>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "MovieLibrary", Version = "v1"});

@@ -4,7 +4,7 @@ using MovieLibrary.Models;
 
 namespace MovieLibrary.Services {
   public class MovieRepository: IMovieRepository {
-    IEnumerable<Movie> IMovieRepository.GetMovies()
+    public IEnumerable<Movie> GetMovies()
     {
       throw new System.NotImplementedException();
     }

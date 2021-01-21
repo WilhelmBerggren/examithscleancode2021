@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using MovieLibrary.Models;
+using MovieLibrary.Services;
 
 namespace MovieLibrary.Controllers
 {
@@ -14,6 +15,12 @@ namespace MovieLibrary.Controllers
     public class MovieController
     {
         static HttpClient client = new HttpClient();
+        private IMovieRepository _movieRepository { get; set; }
+
+        public MovieController(IMovieRepository movieRepository) 
+        {
+            _movieRepository = movieRepository;
+        }
 
         [HttpGet]
         [Route("/toplist")]

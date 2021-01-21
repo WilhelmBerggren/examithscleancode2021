@@ -1,6 +1,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MovieLibrary.Services;
 using MovieLibrary.Controllers;
+using MovieLibraryTests.Mocks;
 
 namespace MovieLibraryTests
 {
@@ -8,9 +9,10 @@ namespace MovieLibraryTests
     public class MovieLibraryTests
     {
         [TestMethod]
-        public void TestMovieRepository()
+        public void TestMovieController()
         {
-            var repository = new MovieRepository();
+            var repository = new MockedMovieRepository();
+            var controller = new MovieController(repository);
             repository.GetMovies();
         }
     }

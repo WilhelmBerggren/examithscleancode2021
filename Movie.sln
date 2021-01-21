@@ -1,6 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+# 
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieLibrary", "MovieLibrary\MovieLibrary.csproj", "{6BD60EAB-779E-4288-8616-9BC240EEE6E5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieLibraryTests", "MovieLibraryTests\MovieLibraryTests.csproj", "{A8D153AA-DDEB-4983-B31C-608611B63163}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -12,5 +15,9 @@ Global
 		{6BD60EAB-779E-4288-8616-9BC240EEE6E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6BD60EAB-779E-4288-8616-9BC240EEE6E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6BD60EAB-779E-4288-8616-9BC240EEE6E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8D153AA-DDEB-4983-B31C-608611B63163}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8D153AA-DDEB-4983-B31C-608611B63163}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8D153AA-DDEB-4983-B31C-608611B63163}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8D153AA-DDEB-4983-B31C-608611B63163}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
