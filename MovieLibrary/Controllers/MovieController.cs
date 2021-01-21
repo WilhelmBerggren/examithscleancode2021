@@ -7,12 +7,13 @@ using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using MovieLibrary.Models;
 using MovieLibrary.Services;
+using Microsoft.AspNetCore.Http;
 
 namespace MovieLibrary.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class MovieController
+    public class MovieController: ControllerBase
     {
         static HttpClient client = new HttpClient();
         private IMovieRepository _movieRepository { get; set; }
@@ -37,9 +38,17 @@ namespace MovieLibrary.Controllers
         
         [HttpGet]
         [Route("/movie")]
-        public Movie GetMovieById(string id) {
-            var movieList = _movieRepository.GetMovies();
-            return movieList.Where(movie => movie.id == id).FirstOrDefault();
+        public ActionResult<Movie> GetMovieById(string id) {
+            var movie =_movieRepository
+                .GetMovies()
+                .Where(movie => movie.id == id)
+                .FirstOrDefault();
+            if (movie != null) {
+                return Ok(movie);
+            } else {
+                return NotFound(movie);
+            }
+            
         }
     }
 }

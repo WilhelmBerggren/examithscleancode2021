@@ -17,5 +17,15 @@ namespace MovieLibrary.Models
         public string[] actors { get; set; }
         public double imdbRating { get; set; }
         public string posterUrl { get; set; }
+
+        
+        public Movie ToSimpleMovie() 
+        {
+            return new Movie {
+                id = id,
+                rated = imdbRating.ToString("0.0"),
+                title = title
+            };
+        }
     }
 }

@@ -14,19 +14,11 @@ namespace MovieLibrary.Services
             _simpleMovieRepository = simpleMovieRepository;
             _detailedMovieRepository = detailedMovieRepository;
         }
-        public Movie SimplifyDetailedMovie(DetailedMovie detailedMovie) 
-        {
-            return new Movie {
-                id = detailedMovie.id,
-                rated = detailedMovie.imdbRating.ToString("0.0"),
-                title = detailedMovie.title
-            };
-        }
         public IEnumerable<Movie> GetMovies()
         {
             var simplifiedMovies = _detailedMovieRepository
                 .GetDetailedMovies()
-                .Select(movie => SimplifyDetailedMovie(movie));
+                .Select(movie => movie.ToSimpleMovie());
             
             var simpleMovies = _simpleMovieRepository.GetMovies();
 

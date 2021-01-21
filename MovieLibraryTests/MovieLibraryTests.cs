@@ -11,7 +11,7 @@ namespace MovieLibraryTests
     public class MovieLibraryTests
     {
         [TestMethod]
-        public void TestMovieController()
+        public void TestTopList()
         {
             var movies = new[] {
                 new Movie { id = "1", title = "a", rated = "5,0"}
@@ -78,22 +78,10 @@ namespace MovieLibraryTests
         [TestMethod]
         public void TestDetailedMovieConversion() 
         {
-            var movies = new[] {
-                new Movie { id = "1", title = "a", rated = "5,0"},
-                new Movie { id = "2", title = "b", rated = "6,0"}
-            };
-            
-            var detailedMovies = new[] {
-                new DetailedMovie { id = "3", title = "c", imdbRating = 7.0 },
-                new DetailedMovie { id = "4", title = "d", imdbRating = 8.0 }
-            };
-
-            var simpleMovieRepository = new MockedSimpleMovieRepository(movies);
-            var detailedMovieRepository = new MockedDetailedMovieRepository(detailedMovies);
-            var combinedMovieRepository = new MovieRepository(simpleMovieRepository, detailedMovieRepository);
+            var detailedMovie = new DetailedMovie { id = "3", title = "c", imdbRating = 7.0 };
 
             var expected = new Movie { id = "3", title = "c", rated = "7,0" };
-            var actual = combinedMovieRepository.SimplifyDetailedMovie(detailedMovies.First());
+            var actual = detailedMovie.ToSimpleMovie();
 
             Assert.AreEqual(expected.title, actual.title);
             Assert.AreEqual(expected.rated, actual.rated);
@@ -124,6 +112,18 @@ namespace MovieLibraryTests
             }
             Assert.AreEqual(expected, actual);
             Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void TestDataSources() {
+            var simpleMovieRepository = new SimpleMovieRepository();
+            var detailedMovieRepository = new DetailedMovieRepository();
+
+            Assert.IsNotNull(simpleMovieRepository.GetMovies());
+            Assert.AreNotEqual(simpleMovieRepository.GetMovies().Count(), 0);
+            
+            Assert.IsNotNull(detailedMovieRepository.GetDetailedMovies());
+            Assert.AreNotEqual(detailedMovieRepository.GetDetailedMovies().Count(), 0);
         }
     }
 }
