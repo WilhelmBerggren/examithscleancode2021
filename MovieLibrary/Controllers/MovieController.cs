@@ -27,34 +27,19 @@ namespace MovieLibrary.Controllers
         public IEnumerable<string> Toplist(bool asc = true)
         {
             List<string> res = new List<string>();
-            var ml = _movieRepository.GetMovies();
-            //Sort ml
-            if (asc)
-            {
-                ml.OrderBy(e => e.rated);
-            }
-            else
-            {
-                ml.OrderByDescending(e => e.rated);
-            }
-            foreach (var m in ml) {
-                res.Add(m.title);
-            }
-            //result.Add(new StreamReader(response.Content.ReadAsStream()).ReadToEnd());
-            return res;
+            var movieList = _movieRepository.GetMovies();
+            var orderedMovieList = asc 
+                ? movieList.OrderBy(e => e.rated) 
+                : movieList.OrderByDescending(e => e.rated);
+            
+            return orderedMovieList.Select(movie => movie.title);
         }
         
         [HttpGet]
         [Route("/movie")]
         public Movie GetMovieById(string id) {
-            var ml = _movieRepository.GetMovies();
-            foreach (var m in ml) {
-                if (m.id.Equals((id)))
-                {
-                    return m; //Found it!
-                }
-            }
-            return null;
+            var movieList = _movieRepository.GetMovies();
+            return movieList.Where(movie => movie.id == id).FirstOrDefault();
         }
     }
 }

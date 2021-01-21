@@ -59,5 +59,20 @@ namespace MovieLibraryTests
             Assert.AreEqual(expected.First(), actual.First());
             Assert.AreEqual(actual.First(), "b");
         }
+        
+        [TestMethod]
+        public void TestGetMovieById() {
+            var movies = new[] {
+                new Movie { id = "1", title = "a", rated = "5,0"},
+                new Movie { id = "2", title = "b", rated = "6,0"}
+            };
+            var repository = new MockedMovieRepository(movies);
+            var controller = new MovieController(repository);
+
+            var expected = movies.First();
+            var actual = controller.GetMovieById("1");
+
+            Assert.AreEqual(expected, actual);
+        }
     }
 }
